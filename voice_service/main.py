@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
 import subprocess
 import tempfile
+import urllib.request
 
 app = FastAPI()
 
@@ -29,8 +30,13 @@ except Exception as e:
 
 PIPER_VOICE = "en_US-lessac-high.onnx"
 
-# Ensure the Piper voice exists or download it (this is a placeholder for actual local installation)
-# For the sake of the script, we assume piper is available in PATH or handled.
+# Download the Piper voice model if it doesn't exist (e.g. on Render)
+if not os.path.exists(PIPER_VOICE):
+    print(f"Downloading {PIPER_VOICE} (this might take a minute)...")
+    urllib.request.urlretrieve("https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/high/en_US-lessac-high.onnx", PIPER_VOICE)
+if not os.path.exists(PIPER_VOICE + ".json"):
+    print(f"Downloading {PIPER_VOICE}.json...")
+    urllib.request.urlretrieve("https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/high/en_US-lessac-high.onnx.json", PIPER_VOICE + ".json")
 
 @app.post("/transcribe")
 async def transcribe(audio: UploadFile = File(...)):
@@ -59,7 +65,7 @@ async def speak(text: str):
         
         try:
             import shutil
-            piper_path = shutil.which("piper") or r"C:\Users\Ash\AppData\Roaming\Python\Python314\Scripts\piper.exe"
+            piper_path = shutil.which("piper") or shutil.which("piper-tts") or "piper"
             process = subprocess.Popen(
                 [piper_path, '--model', PIPER_VOICE, '--output_file', tmp_path],
                 stdin=subprocess.PIPE,
@@ -78,4 +84,5 @@ async def speak(text: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    port = int(os.environ.get("PORT", 8001))
+    uvicorn.run(app, host="0.0.0.0", port=port)
