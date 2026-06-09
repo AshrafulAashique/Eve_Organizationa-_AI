@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "client/dist",
   "framework": "vite",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
