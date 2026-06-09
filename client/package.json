@@ -1,0 +1,18 @@
+{
+  "name": "org-ai-platform-client",
+  "version": "1.0.0",
+  "description": "Private Organization AI Platform Client",
+  "scripts": {
+    "dev": "vite --port 5173 --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "marked": "^9.1.0",
+    "highlight.js": "^11.8.0"
+  },
+  "devDependencies": {
+    "vite": "^5.1.4"
+  }
+}

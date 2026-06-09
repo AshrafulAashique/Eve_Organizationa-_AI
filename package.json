@@ -1,0 +1,21 @@
+{
+  "name": "org-ai-platform",
+  "version": "1.0.0",
+  "description": "Private Organization AI Platform — local + Ollama",
+  "private": true,
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "node server/index.js",
+    "client": "cd client && npx vite --port 5173 --host",
+    "build": "cd client && npx vite build"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^2.7.0",
+    "sql.js": "^1.10.3",
+    "uuid": "^9.0.0"
+  }
+}

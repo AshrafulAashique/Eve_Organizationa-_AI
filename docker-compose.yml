@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: org_ai_postgres
+    environment:
+      POSTGRES_USER: org_ai_user
+      POSTGRES_PASSWORD: org_ai_password
+      POSTGRES_DB: org_ai_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: org_ai_chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadata:/chroma/chroma
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  chromadata:
